@@ -1,3 +1,4 @@
+---------------------------------
 local lastRadar = nil
 -- Determines if player is close enough to trigger cam
 function HandlespeedCam(speedCam, hasBeenBusted)

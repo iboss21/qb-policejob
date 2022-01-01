@@ -1,3 +1,4 @@
+------------
 local currentCameraIndex = 0
 local createdCamera = 0
 

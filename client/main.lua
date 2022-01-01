@@ -1,3 +1,4 @@
+----------------
 -- Variables
 QBCore = exports['qb-core']:GetCoreObject()
 isHandcuffed = false

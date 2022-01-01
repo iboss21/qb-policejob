@@ -1,4 +1,5 @@
 -- Variables
+-----------
 
 local Plates = {}
 local PlayerStatus = {}
@@ -302,6 +303,16 @@ QBCore.Commands.Add("flagplate", "Flag A Plate (Police Only)", {{name = "plate",
         TriggerClientEvent('QBCore:Notify', src, 'For on-duty police only', 'error')
     end
 end)
+-- Emergency Or Panic Command
+QBCore.Commands.Add("panic", "Press your Police Panic Button", {}, false, function(source)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player then
+        if Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty then
+            TriggerClientEvent('police:client:SendEmergencyMessage', src)
+        end
+    end
+end)
 
 QBCore.Commands.Add("unflagplate", "Unflag A Plate (Police Only)", {{name = "plate", help = "License plate"}}, true, function(source, args)
     local src = source
@@ -410,7 +421,7 @@ QBCore.Commands.Add("anklet", "Attach Tracking Anklet (Police Only)", {}, false,
     end
 end)
 
-QBCore.Commands.Add("ankletlocation", "Get the location of a persons anklet", {{name="cid", help="Citizen ID of the person"}}, true, function(source, args)
+QBCore.Commands.Add("ankletlocation", "Get the location of a persons anklet", {{"cid", "Citizen ID of the person"}}, true, function(source, args)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty then

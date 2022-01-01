@@ -462,6 +462,7 @@ end)
     This is where all the threads go.
 --]]
 
+
 -- Toggle Duty
 CreateThread(function()
     while true do
@@ -491,6 +492,19 @@ CreateThread(function()
             end
         end
         Wait(sleep)
+    end
+end)
+
+-- Toggle Duty Command
+RegisterCommand('duty', function()
+    if QBCore.Functions.GetPlayerData().job.name == 'police' then
+        onDuty = not onDuty
+        TriggerServerEvent("police:server:UpdateCurrentCops")
+        TriggerServerEvent("QBCore:ToggleDuty")
+        TriggerServerEvent("police:server:UpdateBlips")
+        TriggerEvent('qb-policealerts:ToggleDuty', onDuty)
+    else
+        QBCore.Functions.Notify("You don't have access to this command", 'error')
     end
 end)
 
