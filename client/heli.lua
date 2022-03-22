@@ -6,11 +6,12 @@ local speed_ud = 3.0 -- speed by which the camera pans up-down
 local toggle_helicam = 51 -- control id of the button by which to toggle the helicam mode. Default: INPUT_CONTEXT (E)
 local toggle_vision = 25 -- control id to toggle vision mode. Default: INPUT_AIM (Right mouse btn)
 local toggle_rappel = 154 -- control id to rappel out of the heli. Default: INPUT_DUCK (X)
-local toggle_spotlight = 74 -- control id to toggle the front spotlight Default: INPUT_VEH_HEADLIGHT (H)
+local toggle_spotlight = 74 -- control id to toggle the front spotlight Default: INPUT_PhoneCameraGrid (G)
 local toggle_lock_on = 22 -- control id to lock onto a vehicle with the camera. Default is INPUT_SPRINT (spacebar)
 
 -- Script starts here
 local helicam = false
+local polmav_hash = `polmav`
 local fov = (fov_max+fov_min)*0.5
 local vision_state = 0 -- 0 is normal, 1 is nightmode, 2 is thermal vision
 
@@ -22,10 +23,11 @@ local vehicle_detected = nil
 local locked_on_vehicle = nil
 
 -- Functions
+
 local function IsPlayerInPolmav()
 	local lPed = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(lPed)
-	return IsVehicleModel(vehicle, GetHashKey(Config.PoliceHelicopter))
+	return IsVehicleModel(vehicle, polmav_hash)
 end
 
 local function IsHeliHighEnough(heli)
@@ -127,12 +129,14 @@ local function RenderVehicleInfo(vehicle)
 end
 
 -- Events
+
 RegisterNetEvent('heli:spotlight', function(serverID, state)
 	local heli = GetVehiclePedIsIn(GetPlayerPed(GetPlayerFromServerId(serverID)), false)
 	SetVehicleSearchlight(heli, state, false)
 end)
 
 -- Threads
+
 CreateThread(function()
 	while true do
 		Wait(0)
@@ -159,7 +163,7 @@ CreateThread(function()
 						end
 					end
 
-					if IsControlJustPressed(0, toggle_spotlight) and (GetPedInVehicleSeat(heli, -1) == lPed or GetPedInVehicleSeat(heli, 0) == lPed) then
+					if IsControlJustPressed(0, toggle_spotlight) and GetPedInVehicleSeat(heli, -1) == lPed or GetPedInVehicleSeat(heli, 0) == lPed then
 						spotlight_state = not spotlight_state
 						TriggerServerEvent("heli:spotlight", spotlight_state)
 						PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)

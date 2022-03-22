@@ -1,3 +1,4 @@
+------------
 local currentCameraIndex = 0
 local createdCamera = 0
 
@@ -64,7 +65,7 @@ local function CreateInstuctionScaleform(scaleform)
     PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
     PushScaleformMovieFunctionParameterInt(1)
     InstructionButton(GetControlInstructionalButton(1, 194, true))
-    InstructionButtonMessage(Lang:t('info.close_camera'))
+    InstructionButtonMessage("Close Camera")
     PopScaleformMovieFunctionVoid()
 
     PushScaleformMovieFunction(scaleform, "DRAW_INSTRUCTIONAL_BUTTONS")
@@ -81,6 +82,7 @@ local function CreateInstuctionScaleform(scaleform)
 end
 
 -- Events
+
 RegisterNetEvent('police:client:ActiveCamera', function(cameraId)
     if Config.SecurityCameras.cameras[cameraId] then
         DoScreenFadeOut(250)
@@ -113,7 +115,7 @@ RegisterNetEvent('police:client:ActiveCamera', function(cameraId)
         })
         DoScreenFadeIn(250)
     else
-        QBCore.Functions.Notify(Lang:t("error.no_camera"), "error")
+        QBCore.Functions.Notify("Camera doesn\'t exist..", "error")
     end
 end)
 
@@ -134,6 +136,7 @@ RegisterNetEvent('police:client:SetCamera', function(key, isOnline)
 end)
 
 -- Threads
+
 CreateThread(function()
     while true do
         sleep = 2000
